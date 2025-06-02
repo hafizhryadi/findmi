@@ -30,8 +30,8 @@ class ItemController extends Controller
         if (!auth()->check()) {
             abort(403, 'You must be logged in to create an item.');
         }
-        // return Inertia::render('items/Create');
-        return view('items.create');
+        return Inertia::render('items/Create');
+        //return view('items.create');
     }
 
     /**
@@ -56,7 +56,8 @@ class ItemController extends Controller
         }
         $validatedData['user_id'] = auth()->id();
         Item::create($validatedData);
-        return redirect()->route('items.index')->with('success', 'Item created successfully.');
+        return Inertia::render('items/Index');
+        //return redirect()->route('items.index')->with('success', 'Item created successfully.');
     }
 
     /**
@@ -77,7 +78,10 @@ class ItemController extends Controller
         if (auth()->user()->cannot('update', $item)) {
             abort(403, 'You do not have permission to edit this item.');
         }
-        return view('items.edit', compact('item'));
+        return Inertia::render('items/Edit', [
+            'item' => $item
+        ]);
+        //return view('items.edit', compact('item'));
     }
 
     /**
@@ -103,7 +107,8 @@ class ItemController extends Controller
         }
 
         $item->update($validatedData);
-        return redirect()->route('items.index')->with('success', 'Item updated successfully.');
+        return Inertia::render('items/Index');
+        //return redirect()->route('items.index')->with('success', 'Item updated successfully.');
     }
 
     /**
@@ -117,6 +122,7 @@ class ItemController extends Controller
         }
 
         $item->delete();
-        return redirect()->route('items.index')->with('success', 'Item deleted successfully.');
+        return Inertia::render('items/Index');
+        //return redirect()->route('items.index')->with('success', 'Item deleted successfully.');
     }
 }
