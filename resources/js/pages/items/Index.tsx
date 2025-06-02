@@ -1,6 +1,9 @@
 import React from 'react';
 import { InertiaLink } from '@inertiajs/inertia-react';
 
+// get all items di dalam variabel
+// contoh cara ambil item
+// <h5 className="card-title">{item.name}</h5>
 type Item = {
   id: number;
   name: string;
@@ -43,7 +46,7 @@ const Index: React.FC<Props> = ({ items }) => {
       <div className="hero-section text-center mb-5 py-5 bg-primary text-white rounded">
         <h1 className="display-4 fw-bold">FindMi - All Items</h1>
         <p className="lead">Discover and manage your items easily.</p>
-        <InertiaLink href="/items/create" className="btn btn-light btn-lg mt-3">Create Item</InertiaLink>
+        <InertiaLink href="/items/create" className="btn btn-light btn-lg mt-3">Create an Item</InertiaLink>
       </div>
 
       {/* Items List */}
