@@ -14,6 +14,12 @@ class ItemController extends Controller
     public function index()
     {
         $items = Item::latest()->paginate(10);
+        $items->getCollection()->transform(function ($item) {
+            $user = auth()->user();
+            $item->canUpdate = $user ? $user->can('update', $item) : false;
+            $item->canDelete = $user ? $user->can('delete', $item) : false;
+            return $item;
+        });
         return Inertia::render('items/Index', [
             'items' => $items
         ]);
@@ -122,7 +128,8 @@ class ItemController extends Controller
         }
 
         $item->delete();
-        return Inertia::render('items/Index');
+        return redirect()->route('items.index');
+        //return Inertia::render('items/Index');
         //return redirect()->route('items.index')->with('success', 'Item deleted successfully.');
     }
 }

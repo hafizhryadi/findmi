@@ -2,11 +2,15 @@
 
 import type React from "react"
 import { InertiaLink } from "@inertiajs/inertia-react"
-import { Eye, Edit, Trash2, Plus, Search } from "lucide-react"
+import { Edit, Trash2, Plus, Search } from "lucide-react"
+import { router } from "@inertiajs/react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import Footer from "@/components/footer"
+import Navbar from "@/components/navbar"
+import Menu from "@/components/menu"
 
 // get all items di dalam variabel
 // contoh cara ambil item
@@ -17,6 +21,8 @@ type Item = {
   description?: string
   image?: string
   status: string
+  canUpdate?: boolean // <-- add this
+  canDelete?: boolean // <-- add this
 }
 
 type Props = {
@@ -33,68 +39,18 @@ const Index: React.FC<Props> = ({ items }) => {
         return "bg-green-100 text-green-800 border-green-200"
       case "lost":
         return "bg-red-100 text-red-800 border-red-200"
-      case "available":
-        return "bg-pink-100 text-pink-800 border-pink-200"
       default:
         return "bg-gray-100 text-gray-800 border-gray-200"
     }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-pink-100">
+    <div className="min-h-screen">
       {/* Header dengan Logo Polsri */}
-      <div className="bg-white shadow-sm border-b-2 border-pink-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              {/* Logo Polsri - Gunakan logo sebenarnya */}
-              <div className="flex items-center space-x-3">
-                <img src="/placeholder.svg?height=48&width=48" alt="Polsri Logo" className="w-12 h-12 object-contain" />
-                <div className="hidden sm:block">
-                  <h1 className="text-lg font-bold text-gray-800">Manajemen Informatika</h1>
-                  <p className="text-sm text-pink-600 font-medium">Politeknik Negeri Sriwijaya</p>
-                </div>
-              </div>
-            </div>
-            <InertiaLink
-              href="/"
-              className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent"
-            >
-              FindMi
-            </InertiaLink>
-          </div>
-        </div>
-      </div>
+      <Navbar/>
 
       {/* Pink Navbar */}
-      <nav className="bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-14">
-            {/* Desktop Navigation */}
-            <div className="flex items-center space-x-8">
-              <InertiaLink
-                href="/items"
-                className="text-white font-medium px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30"
-              >
-                All Items
-              </InertiaLink>
-              <InertiaLink
-                href="/items/create"
-                className="text-white/90 hover:text-white font-medium transition-colors duration-200 hover:bg-white/10 px-4 py-2 rounded-full"
-              >
-                Create Item
-              </InertiaLink>
-            </div>
-
-            {/* Mobile menu button */}
-            <button className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors text-white">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </nav>
+      <Menu/>
 
       {/* Pink Hero Section */}
       <div className="relative overflow-hidden">
@@ -132,7 +88,7 @@ const Index: React.FC<Props> = ({ items }) => {
             {items.data.map((item) => (
               <Card
                 key={item.id}
-                className="group hover:shadow-2xl transition-all duration-300 border-2 border-pink-100 shadow-lg bg-white overflow-hidden hover:border-pink-300"
+                className="group hover:shadow-xl border-pink-600 transition-all duration-300 border-2 shadow-lg  overflow-hidden hover:border-pink-300"
               >
                 {item.image && (
                   <div className="relative h-48 overflow-hidden">
@@ -148,14 +104,14 @@ const Index: React.FC<Props> = ({ items }) => {
                   </div>
                 )}
 
-                <CardHeader className="pb-3 bg-gradient-to-r from-pink-50 to-rose-50">
-                  <h3 className="text-xl font-bold text-gray-800 group-hover:text-pink-600 transition-colors">
+                <CardHeader className="pb-3">
+                  <h3 className="text-xl font-bold transition-colors">
                     {item.name}
                   </h3>
                 </CardHeader>
 
                 <CardContent className="pb-4">
-                  <p className="text-gray-600 text-sm leading-relaxed mb-3">{item.description}</p>
+                  <p className=" text-sm leading-relaxed mb-3">{item.description}</p>
                   {!item.image && (
                     <div className="mb-3">
                       <Badge className={`${getStatusColor(item.status)} font-medium`}>{item.status}</Badge>
@@ -163,49 +119,37 @@ const Index: React.FC<Props> = ({ items }) => {
                   )}
                 </CardContent>
 
-                <CardFooter className="bg-gradient-to-r from-pink-50 to-rose-50 border-t-2 border-pink-100 flex justify-between gap-2 p-4">
-                  <InertiaLink href={`/items/${item.id}`}>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="hover:bg-pink-50 hover:text-pink-600 hover:border-pink-300 border-pink-200"
-                    >
-                      <Eye className="mr-1 h-4 w-4" />
-                      View
-                    </Button>
-                  </InertiaLink>
 
-                  <InertiaLink href={`/items/${item.id}/edit`}>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="hover:bg-rose-50 hover:text-rose-600 hover:border-rose-300 border-rose-200"
-                    >
-                      <Edit className="mr-1 h-4 w-4" />
-                      Edit
-                    </Button>
-                  </InertiaLink>
+                <CardFooter className=" border-t flex justify-center gap-10 p-4">
+                  {item.canUpdate && (
+                    <InertiaLink href={`/items/${item.id}/edit`}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="hover:text-pink-400 hover:border-rose-300 border-rose-200"
+                      >
+                        <Edit className="mr-1 h-4 w-4" />
+                        Edit
+                      </Button>
+                    </InertiaLink>
+                  )}
 
-                  <InertiaLink
-                    href={`/items/${item.id}`}
-                    method="delete"
-                    as="button"
-                    data={{}}
-                    onClick={(e) => {
-                      if (!window.confirm("Are you sure you want to delete this item?")) {
-                        e.preventDefault()
-                      }
-                    }}
-                  >
+                  {item.canDelete && (
                     <Button
+                      type="button"
                       variant="outline"
                       size="sm"
-                      className="hover:bg-red-50 hover:text-red-600 hover:border-red-300 border-red-200"
+                      className="hover:text-red-600 hover:border-red-300 border-red-200"
+                      onClick={() => {
+                        if (window.confirm("Are you sure?")) {
+                          router.delete(`/items/${item.id}`)
+                        }
+                      }}
                     >
                       <Trash2 className="mr-1 h-4 w-4" />
                       Delete
                     </Button>
-                  </InertiaLink>
+                  )}
                 </CardFooter>
               </Card>
             ))}
@@ -226,14 +170,14 @@ const Index: React.FC<Props> = ({ items }) => {
                         ${
                           link.active
                             ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg"
-                            : "text-gray-600 hover:bg-pink-50 hover:text-pink-600"
+                            : " hover:bg-pink-50 hover:text-pink-600"
                         }
                       `}
                       dangerouslySetInnerHTML={{ __html: link.label }}
                     />
                   ) : (
                     <span
-                      className="px-4 py-2 rounded-full text-sm font-medium text-gray-400 cursor-not-allowed"
+                      className="px-4 py-2 rounded-full text-sm font-medium  cursor-not-allowed"
                       dangerouslySetInnerHTML={{ __html: link.label }}
                     />
                   )}
@@ -245,27 +189,7 @@ const Index: React.FC<Props> = ({ items }) => {
       </div>
 
       {/* Footer dengan Logo Polsri */}
-      <footer className="bg-gradient-to-r from-pink-600 to-rose-600 text-white py-8 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="flex items-center space-x-4 mb-4 md:mb-0">
-              <img
-                src="/placeholder.svg?height=40&width=40"
-                alt="Polsri Logo"
-                className="w-10 h-10 object-contain bg-white/20 rounded-full p-1"
-              />
-              <div>
-                <p className="font-medium">Manajemen Informatika</p>
-                <p className="text-sm text-pink-100">Politeknik Negeri Sriwijaya</p>
-              </div>
-            </div>
-            <div className="text-center md:text-right">
-              <p className="text-sm text-pink-100">© 2024 FindMi. All rights reserved.</p>
-              <p className="text-xs text-pink-200 mt-1">Developed by Manajemen Informatika Students</p>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
     </div>
   )
 }

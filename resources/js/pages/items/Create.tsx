@@ -1,8 +1,6 @@
-"use client"
-
 import type React from "react"
 import { useState } from "react"
-import { InertiaLink, useForm } from "@inertiajs/inertia-react"
+import { Link, useForm } from "@inertiajs/react"
 import { ArrowLeft, Upload, ImageIcon, AlertCircle, Check, Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -11,6 +9,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import Navbar from "@/components/navbar"
+import Menu from "@/components/menu"
+import Footer from "@/components/footer"
 
 const Create: React.FC = () => {
   const { data, setData, post, processing, errors } = useForm({
@@ -48,86 +49,41 @@ const Create: React.FC = () => {
     e.preventDefault()
     post("/items", {
       forceFormData: true,
+      onSuccess: () => {
+        window.location.href = "/items"
+      },
     })
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-pink-100">
+    <div className="min-h-screen ">
       {/* Header dengan Logo Polsri */}
-      <div className="bg-white shadow-sm border-b-2 border-pink-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              {/* Logo Polsri */}
-              <div className="flex items-center space-x-3">
-                <img src="/placeholder.svg?height=48&width=48" alt="Polsri Logo" className="w-12 h-12 object-contain" />
-                <div className="hidden sm:block">
-                  <h1 className="text-lg font-bold text-gray-800">Manajemen Informatika</h1>
-                  <p className="text-sm text-pink-600 font-medium">Politeknik Negeri Sriwijaya</p>
-                </div>
-              </div>
-            </div>
-            <InertiaLink
-              href="/"
-              className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent"
-            >
-              FindMi
-            </InertiaLink>
-          </div>
-        </div>
-      </div>
+      <Navbar/>
 
       {/* Pink Navbar */}
-      <nav className="bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-14">
-            {/* Desktop Navigation */}
-            <div className="flex items-center space-x-8">
-              <InertiaLink
-                href="/items"
-                className="text-white/90 hover:text-white font-medium transition-colors duration-200 hover:bg-white/10 px-4 py-2 rounded-full"
-              >
-                All Items
-              </InertiaLink>
-              <InertiaLink
-                href="/items/create"
-                className="text-white font-medium px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30"
-              >
-                Create Item
-              </InertiaLink>
-            </div>
-
-            {/* Mobile menu button */}
-            <button className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors text-white">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </nav>
+      <Menu/>
 
       {/* Main Content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex items-center mb-8">
-          <InertiaLink href="/items" className="flex items-center text-pink-600 hover:text-pink-700 transition-colors">
+          <Link href="/items" className="flex items-center text-pink-600 hover:text-pink-700 transition-colors">
             <ArrowLeft className="mr-2 h-5 w-5" />
             <span className="font-medium">Back to Items</span>
-          </InertiaLink>
+          </Link>
         </div>
 
         <Card className="border-2 border-pink-100 shadow-xl">
-          <CardHeader className="bg-gradient-to-r from-pink-50 to-rose-50 border-b border-pink-100">
-            <CardTitle className="text-2xl font-bold text-gray-800">Create New Item</CardTitle>
-            <CardDescription className="text-gray-600">
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold">Create New Item</CardTitle>
+            <CardDescription>
               Fill out the form below to add a new item to the platform.
             </CardDescription>
           </CardHeader>
-          <CardContent className="pt-6">
+          <CardContent>
             <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-6">
               {/* Name Field */}
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-gray-700 font-medium">
+                <Label htmlFor="name" className="font-medium">
                   Item Name <span className="text-pink-600">*</span>
                 </Label>
                 <Input
@@ -152,7 +108,7 @@ const Create: React.FC = () => {
 
               {/* Description Field - Changed from Textarea to Input */}
               <div className="space-y-2">
-                <Label htmlFor="description" className="text-gray-700 font-medium">
+                <Label htmlFor="description" className=" font-medium">
                   Description
                 </Label>
                 <Input
@@ -176,7 +132,7 @@ const Create: React.FC = () => {
 
               {/* Image Upload Field */}
               <div className="space-y-2">
-                <Label htmlFor="image" className="text-gray-700 font-medium">
+                <Label htmlFor="image" className=" font-medium">
                   Image
                 </Label>
                 <div
@@ -230,10 +186,10 @@ const Create: React.FC = () => {
                         <Upload className="h-8 w-8 text-pink-500" />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600 mb-2">
+                        <p className="text-sm  mb-2">
                           <span className="font-medium">Click to upload</span> or drag and drop
                         </p>
-                        <p className="text-xs text-gray-500">SVG, PNG, JPG or GIF (max. 2MB)</p>
+                        <p className="text-xs ">SVG, PNG, JPG or GIF (max. 2MB)</p>
                       </div>
                       <Button
                         type="button"
@@ -257,7 +213,7 @@ const Create: React.FC = () => {
 
               {/* Status Field */}
               <div className="space-y-2">
-                <Label htmlFor="status" className="text-gray-700 font-medium">
+                <Label htmlFor="status" className=" font-medium">
                   Status <span className="text-pink-600">*</span>
                 </Label>
                 <Select name="status" value={data.status} onValueChange={handleSelectChange} required>
@@ -293,7 +249,7 @@ const Create: React.FC = () => {
               </div>
 
               {/* Form Tips */}
-              <Alert className="bg-pink-50 border-pink-200 text-pink-800">
+              <Alert className="text-pink-800">
                 <AlertDescription className="text-sm">
                   Adding clear images and brief descriptions will help others identify your item more easily.
                 </AlertDescription>
@@ -315,7 +271,7 @@ const Create: React.FC = () => {
                     "Create Item"
                   )}
                 </Button>
-                <InertiaLink href="/items" className="flex-1">
+                <Link href="/items" className="flex-1">
                   <Button
                     type="button"
                     variant="outline"
@@ -323,7 +279,7 @@ const Create: React.FC = () => {
                   >
                     Cancel
                   </Button>
-                </InertiaLink>
+                </Link>
               </div>
             </form>
           </CardContent>
@@ -331,27 +287,7 @@ const Create: React.FC = () => {
       </div>
 
       {/* Footer dengan Logo Polsri */}
-      <footer className="bg-gradient-to-r from-pink-600 to-rose-600 text-white py-8 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="flex items-center space-x-4 mb-4 md:mb-0">
-              <img
-                src="/placeholder.svg?height=40&width=40"
-                alt="Polsri Logo"
-                className="w-10 h-10 object-contain bg-white/20 rounded-full p-1"
-              />
-              <div>
-                <p className="font-medium">Manajemen Informatika</p>
-                <p className="text-sm text-pink-100">Politeknik Negeri Sriwijaya</p>
-              </div>
-            </div>
-            <div className="text-center md:text-right">
-              <p className="text-sm text-pink-100">© 2024 FindMi. All rights reserved.</p>
-              <p className="text-xs text-pink-200 mt-1">Developed by Manajemen Informatika Students</p>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
     </div>
   )
 }
