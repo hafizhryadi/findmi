@@ -1,9 +1,10 @@
+// Index.tsx
 "use client"
 
 import type React from "react"
 import { InertiaLink } from "@inertiajs/inertia-react"
 import { Edit, Trash2, Plus, Search } from "lucide-react"
-import { router } from "@inertiajs/react"
+import { router } from "@inertiajs/react" // Pastikan router diimpor
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
@@ -12,23 +13,20 @@ import Footer from "@/components/footer"
 import Navbar from "@/components/navbar"
 import Menu from "@/components/menu"
 
-// get all items di dalam variabel
-// contoh cara ambil item
-// <h5 className="card-title">{item.name}</h5>
 type Item = {
   id: number
   name: string
   description?: string
   image?: string
   status: string
-  canUpdate?: boolean // <-- add this
-  canDelete?: boolean // <-- add this
+  canUpdate?: boolean
+  canDelete?: boolean
 }
 
 type Props = {
   items: {
     data: Item[]
-    links: unknown[]
+    links: Array<{ url: string | null; label: string; active: boolean }>
   }
 }
 
@@ -44,6 +42,19 @@ const Index: React.FC<Props> = ({ items }) => {
     }
   }
 
+  // Fungsi handleCardClick yang akan digunakan pada setiap Card
+  const handleCardClick = (itemId: number, e: React.MouseEvent) => {
+    // Mencegah navigasi jika klik berasal dari tombol atau tautan di dalam kartu
+    // e.target adalah elemen yang sebenarnya diklik
+    // .closest() akan mencari elemen terdekat yang cocok dengan selector
+    if ((e.target as HTMLElement).closest('button') || (e.target as HTMLElement).closest('a')) {
+      e.stopPropagation(); // Mencegah event klik "naik" ke Card
+      return; // Hentikan fungsi jika tombol/tautan diklik
+    }
+    // Jika bukan tombol atau tautan, navigasi ke halaman detail
+    router.visit(`/items/${itemId}`);
+  };
+
   return (
     <div className="min-h-screen">
       {/* Header dengan Logo Polsri */}
@@ -53,13 +64,13 @@ const Index: React.FC<Props> = ({ items }) => {
       <Menu/>
 
       {/* Pink Hero Section */}
-      <div className="relative overflow-hidden">
+      <div className=" relative overflow-hidden ">
         <div className="absolute inset-0 bg-gradient-to-r from-pink-600 via-rose-500 to-pink-700"></div>
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg">FindMi - All Items</h1>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg">Welcome to FindMi</h1>
           <p className="text-xl text-pink-100 mb-8 max-w-2xl mx-auto">
-            Discover and manage your items easily with our modern platform.
+            Temukan barang yang hilang dengan mudah dan cepat.
           </p>
           <InertiaLink href="/items/create">
             <Button
@@ -74,7 +85,7 @@ const Index: React.FC<Props> = ({ items }) => {
       </div>
 
       {/* Items Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-6xl mx-auto px-2 sm:px-3 lg:px-10 py-5">
         {items.data.length === 0 ? (
           <div className="text-center py-16">
             <div className="bg-pink-50 border-2 border-pink-200 rounded-xl p-8 max-w-md mx-auto shadow-lg">
@@ -88,7 +99,9 @@ const Index: React.FC<Props> = ({ items }) => {
             {items.data.map((item) => (
               <Card
                 key={item.id}
-                className="group hover:shadow-xl border-pink-600 transition-all duration-300 border-2 shadow-lg  overflow-hidden hover:border-pink-300"
+                // Tambahkan onClick pada Card
+                onClick={(e) => handleCardClick(item.id, e)}
+                className="group hover:shadow-xl border-pink-600 transition-all duration-300 border-2 shadow-lg overflow-hidden hover:border-pink-300 cursor-pointer h-full"
               >
                 {item.image && (
                   <div className="relative h-48 overflow-hidden">
@@ -119,10 +132,10 @@ const Index: React.FC<Props> = ({ items }) => {
                   )}
                 </CardContent>
 
-
                 <CardFooter className=" border-t flex justify-center gap-10 p-4">
                   {item.canUpdate && (
-                    <InertiaLink href={`/items/${item.id}/edit`}>
+                    // InertiaLink untuk tombol edit tetap ada, dengan stopPropagation
+                    <InertiaLink href={`/items/${item.id}/edit`} onClick={(e) => e.stopPropagation()}>
                       <Button
                         variant="outline"
                         size="sm"
@@ -140,7 +153,8 @@ const Index: React.FC<Props> = ({ items }) => {
                       variant="outline"
                       size="sm"
                       className="hover:text-red-600 hover:border-red-300 border-red-200"
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation() // Penting: Mencegah klik kartu saat menghapus
                         if (window.confirm("Are you sure?")) {
                           router.delete(`/items/${item.id}`)
                         }
@@ -157,10 +171,10 @@ const Index: React.FC<Props> = ({ items }) => {
         )}
 
         {/* Pink Pagination */}
-        {items.links && (items.links as Array<{ url: string | null; label: string; active: boolean }>).length > 3 && (
+        {items.links && items.links.length > 3 && (
           <div className="flex justify-center mt-12">
             <nav className="flex items-center space-x-1 bg-white rounded-full shadow-xl p-2 border-2 border-pink-200">
-              {(items.links as Array<{ url: string | null; label: string; active: boolean }>).map((link, idx) => (
+              {items.links.map((link, idx) => (
                 <div key={idx}>
                   {link.url ? (
                     <InertiaLink
