@@ -1,7 +1,7 @@
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { AlertCircle, ArrowLeft, Check, ImageIcon, Loader2, Upload } from 'lucide-react';
 import type React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Footer from '@/components/footer';
 import Menu from '@/components/menu';
@@ -35,17 +35,17 @@ const Edit: React.FC = () => {
 
     const [previewUrl, setPreviewUrl] = useState<string | null>(item?.image ? `/storage/${item.image}` : null);
 
-    // Sync form data and previewUrl with item prop changes
-    useEffect(() => {
-        setData((data) => ({
-            ...data,
-            name: item?.name || '',
-            description: item?.description || '',
-            image: undefined,
-            status: item?.status || 'lost',
-        }));
-        setPreviewUrl(item?.image ? `/storage/${item.image}` : null);
-    }, [item, setData]);
+    // // Sync form data and previewUrl with item prop changes
+    // useEffect(() => {
+    //     setData(() => ({
+    //         name: item?.name || '',
+    //         description: item?.description || '',
+    //         image: undefined,
+    //         status: item?.status || 'lost',
+    //     }));
+    //     setPreviewUrl(item?.image ? `/storage/${item.image}` : null);
+    // // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
@@ -71,13 +71,7 @@ const Edit: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Check if data has changed
-        const isUnchanged = data.name === item.name && data.description === (item.description || '') && data.status === item.status && !data.image; // Only consider image changed if a new file is selected
-
-        if (isUnchanged) {
-            alert('No changes detected. Please modify the form before submitting.');
-            return;
-        }
+        console.log('Submitting form with data:', data);
         put(`/items/${item.id}`, {
             forceFormData: true,
             onSuccess: () => {
@@ -289,10 +283,10 @@ const Edit: React.FC = () => {
                                     {processing ? (
                                         <>
                                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                            Creating...
+                                            Updating...
                                         </>
                                     ) : (
-                                        'Create Item'
+                                        'Update Item'
                                     )}
                                 </Button>
                                 <Link href="/items" className="flex-1">
