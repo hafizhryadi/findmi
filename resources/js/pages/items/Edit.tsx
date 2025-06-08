@@ -27,10 +27,10 @@ const Edit: React.FC = () => {
     };
 
     const { data, setData, put, processing, errors} = useForm({
-        name: item?.name || '',
-        description: item?.description || '',
+        name: item?.name ?? '',
+        description: item?.description ?? '',
         image: undefined as File | undefined,
-        status: item?.status || 'lost',
+        status: item?.status ?? 'lost',
     });
 
     const [previewUrl, setPreviewUrl] = useState<string | null>(item?.image ? `/storage/${item.image}` : null);

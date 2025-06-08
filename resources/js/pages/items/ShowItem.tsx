@@ -53,7 +53,7 @@ const ShowItem: React.FC<Props> = ({ item }) => {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="flex items-center justify-between">
             <div>
-              <InertiaLink href="/items">
+              <InertiaLink href="/">
                 <Button
                   variant="outline"
                   className="bg-white/20 text-white border-white/30 hover:bg-white/30 mb-4"
@@ -94,7 +94,6 @@ const ShowItem: React.FC<Props> = ({ item }) => {
           <CardHeader className="pb-4">
             <div className="flex justify-between items-start">
               <div className="flex-1">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Item Details</h2>
                 {!item.image && (
                   <Badge className={`${getStatusColor(item.status)} font-medium mb-4`}>
                     {item.status}
@@ -108,18 +107,14 @@ const ShowItem: React.FC<Props> = ({ item }) => {
             <div className="space-y-6">
               {/* Description */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Description</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <h3 className="text-lg font-semibold mb-2">Description</h3>
+                <p className="leading-relaxed">
                   {item.description || "No description available for this item."}
                 </p>
               </div>
 
               {/* Item Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-pink-50 p-4 rounded-lg border border-pink-200">
-                  <h4 className="font-semibold text-pink-900 mb-1">Item ID</h4>
-                  <p className="text-pink-700">#{item.id}</p>
-                </div>
                 <div className="bg-pink-50 p-4 rounded-lg border border-pink-200">
                   <h4 className="font-semibold text-pink-900 mb-1">Status</h4>
                   <Badge className={`${getStatusColor(item.status)} font-medium`}>

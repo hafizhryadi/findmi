@@ -115,7 +115,7 @@ class ItemController extends Controller
         }
 
         $item->update($validatedData);
-        return Inertia::render('items/Index');
+        return redirect()->route('/');
         //return redirect()->route('items.index')->with('success', 'Item updated successfully.');
     }
 
@@ -130,7 +130,7 @@ class ItemController extends Controller
         }
 
         $item->delete();
-        return redirect()->route('items.index');
+        return redirect()->route('/');
         //return Inertia::render('items/Index');
         //return redirect()->route('items.index')->with('success', 'Item deleted successfully.');
     }

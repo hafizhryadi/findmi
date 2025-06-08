@@ -68,7 +68,7 @@ const Create: React.FC = () => {
       {/* Main Content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex items-center mb-8">
-          <Link href="/items" className="flex items-center text-pink-600 hover:text-pink-700 transition-colors">
+          <Link href="/" className="flex items-center text-pink-600 hover:text-pink-700 transition-colors">
             <ArrowLeft className="mr-2 h-5 w-5" />
             <span className="font-medium">Back to Items</span>
           </Link>
