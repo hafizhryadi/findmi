@@ -72,7 +72,9 @@ class ItemController extends Controller
     public function show(string $id)
     {
         $item = Item::findOrFail($id);
-        return view('items.show', compact('item'));
+        return Inertia::render('items/ShowItem', [
+            'item' => $item
+        ]);
     }
 
     /**
