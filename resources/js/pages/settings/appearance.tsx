@@ -1,30 +1,26 @@
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 
 import AppearanceTabs from '@/components/appearance-tabs';
 import HeadingSmall from '@/components/heading-small';
-import { type BreadcrumbItem } from '@/types';
-
-import AppLayout from '@/layouts/app-layout';
+import Navbar from '@/components/navbar';
 import SettingsLayout from '@/layouts/settings/layout';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Appearance settings',
-        href: '/settings/appearance',
-    },
-];
-
 export default function Appearance() {
+    const { auth } = usePage().props as unknown as { auth: { user: { name: string } | null } };
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Appearance settings" />
-
-            <SettingsLayout>
-                <div className="space-y-6">
-                    <HeadingSmall title="Appearance settings" description="Update your account's appearance settings" />
-                    <AppearanceTabs />
+        <div className="bg-background min-h-screen">
+            <Navbar auth={auth} />
+            <div className="flex w-full justify-center">
+                <div className="w-full max-w-2xl">
+                    <Head title="Appearance settings" />
+                    <SettingsLayout>
+                        <div className="space-y-6">
+                            <HeadingSmall title="Appearance settings" description="Update your account's appearance settings" />
+                            <AppearanceTabs />
+                        </div>
+                    </SettingsLayout>
                 </div>
-            </SettingsLayout>
-        </AppLayout>
+            </div>
+        </div>
     );
 }

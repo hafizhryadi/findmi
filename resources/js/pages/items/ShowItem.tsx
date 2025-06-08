@@ -1,7 +1,7 @@
 import type React from "react"
 import { InertiaLink } from "@inertiajs/inertia-react"
 import { ArrowLeft, Edit, Trash2 } from "lucide-react"
-import { router } from "@inertiajs/react"
+import { router, usePage } from "@inertiajs/react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -36,10 +36,12 @@ const ShowItem: React.FC<Props> = ({ item }) => {
     }
   }
 
+  const { auth } = (usePage().props as unknown as { auth: { user: { name: string } | null } })
+
   return (
     <div className="min-h-screen">
       {/* Header dengan Logo Polsri */}
-      <Navbar />
+      <Navbar auth={auth} />
 
       {/* Pink Navbar */}
       <Menu />

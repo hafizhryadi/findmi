@@ -1,10 +1,7 @@
-// Index.tsx
-"use client"
-
 import type React from "react"
 import { InertiaLink } from "@inertiajs/inertia-react"
 import { Edit, Trash2, Plus, Search } from "lucide-react"
-import { router } from "@inertiajs/react" // Pastikan router diimpor
+import { router, usePage } from "@inertiajs/react" // Pastikan router diimpor
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
@@ -31,6 +28,8 @@ type Props = {
 }
 
 const Index: React.FC<Props> = ({ items }) => {
+  const { auth } = (usePage().props as unknown as { auth: { user: { name: string } | null } })
+
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case "found":
@@ -58,7 +57,7 @@ const Index: React.FC<Props> = ({ items }) => {
   return (
     <div className="min-h-screen">
       {/* Header dengan Logo Polsri */}
-      <Navbar/>
+      <Navbar auth={auth} />
 
       {/* Pink Navbar */}
       <Menu/>
@@ -75,7 +74,7 @@ const Index: React.FC<Props> = ({ items }) => {
           <InertiaLink href="/items/create">
             <Button
               size="lg"
-              className="bg-white text-pink-600 hover:bg-pink-50 font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 border-2 border-white"
+              className="bg-white text-pink-600 hover:bg-pink-50 font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 border-2 border-white cursor-pointer"
             >
               <Plus className="mr-2 h-5 w-5" />
               Create an Item

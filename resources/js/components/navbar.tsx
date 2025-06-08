@@ -1,6 +1,13 @@
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { Link } from '@inertiajs/react';
 
-export default function Navbar() {
+interface AuthProps {
+    user?: {
+        name: string;
+        // add other user properties if needed
+    } | null;
+}
+
+export default function Navbar({ auth }: { auth: AuthProps }) {
     return (
         <div className="border-b-2 shadow-sm">
             <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
@@ -15,12 +22,39 @@ export default function Navbar() {
                             </div>
                         </div>
                     </div>
-                    <InertiaLink
-                        href="/items"
-                        className="bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-2xl font-bold text-transparent"
-                    >
-                        FindMi
-                    </InertiaLink>
+                    <div className="flex items-center gap-6">
+                        <Link
+                            href="/items"
+                            className="bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-2xl font-bold text-transparent"
+                        >
+                            FindMi
+                        </Link>
+                        <nav className="flex items-center justify-end gap-4">
+                            {auth?.user ? (
+                                <Link
+                                    href="/settings/profile"
+                                    className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                >
+                                    {auth.user.name}
+                                </Link>
+                            ) : (
+                                <>
+                                    <Link
+                                        href="/login"
+                                        className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
+                                    >
+                                        Log in
+                                    </Link>
+                                    <Link
+                                        href="/register"
+                                        className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                    >
+                                        Register
+                                    </Link>
+                                </>
+                            )}
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>

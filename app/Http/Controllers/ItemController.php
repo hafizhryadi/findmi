@@ -106,7 +106,7 @@ class ItemController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:available,sold',
+            'status' => 'required|in:lost,found,claimed',
         ]);
 
         // image upload handling

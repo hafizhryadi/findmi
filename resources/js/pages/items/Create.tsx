@@ -1,6 +1,6 @@
 import type React from "react"
 import { useState } from "react"
-import { Link, useForm } from "@inertiajs/react"
+import { Link, useForm, usePage } from "@inertiajs/react"
 import { ArrowLeft, Upload, ImageIcon, AlertCircle, Check, Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -18,8 +18,10 @@ const Create: React.FC = () => {
     name: "",
     description: "",
     image: undefined as File | undefined,
-    status: "available",
+    status: "",
   })
+
+  const { auth } = (usePage().props as unknown as { auth: { user: { name: string } | null } })
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
@@ -58,7 +60,7 @@ const Create: React.FC = () => {
   return (
     <div className="min-h-screen ">
       {/* Header dengan Logo Polsri */}
-      <Navbar/>
+      <Navbar auth={auth}/>
 
       {/* Pink Navbar */}
       <Menu/>
