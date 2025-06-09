@@ -110,12 +110,32 @@ export default function Navbar({ auth }: { auth: AuthProps }) {
                         </button>
                         <nav className="flex items-center justify-end gap-4">
                             {auth?.user ? (
-                                <Link
-                                    href="/settings/profile"
-                                    className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-                                >
-                                    {auth.user.name}
-                                </Link>
+                                <div className="relative group">
+                                    <button
+                                        className="inline-flex items-center rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] dark:border-[#3E3E3A] dark:text-[#EDEDEC] focus:outline-none"
+                                    >
+                                        {auth.user.name}
+                                        <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </button>
+                                    <div className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-[#232321] dark:text-[#EDEDEC] opacity-0 group-focus-within:opacity-100 pointer-events-none group-focus-within:pointer-events-auto transition-opacity">
+                                        <Link
+                                            href="/settings/profile"
+                                            className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-[#2d2d2a]"
+                                        >
+                                            Profile
+                                        </Link>
+                                        <Link
+                                            href="/logout"
+                                            method="post"
+                                            as="button"
+                                            className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-[#2d2d2a]"
+                                        >
+                                            Log out
+                                        </Link>
+                                    </div>
+                                </div>
                             ) : (
                                 <>
                                     <Link

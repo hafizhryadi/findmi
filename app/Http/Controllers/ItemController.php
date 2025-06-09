@@ -18,6 +18,7 @@ class ItemController extends Controller
             $user = auth()->user();
             $item->canUpdate = $user ? $user->can('update', $item) : false;
             $item->canDelete = $user ? $user->can('delete', $item) : false;
+            $item->creator_name = $item->user ? $item->user->name : null;
             return $item;
         });
         return Inertia::render('items/Index', [
@@ -115,7 +116,7 @@ class ItemController extends Controller
         }
 
         $item->update($validatedData);
-        return redirect()->route('/');
+        return Inertia::render('items/Index');
         //return redirect()->route('items.index')->with('success', 'Item updated successfully.');
     }
 

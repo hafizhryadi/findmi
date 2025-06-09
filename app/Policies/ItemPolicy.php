@@ -37,7 +37,7 @@ class ItemPolicy
      */
     public function update(User $user, Item $item): bool
     {
-        return $user->id === $item->user_id;
+        return $user->id === $item->user_id || $user->is_admin;
     }
 
     /**
@@ -45,7 +45,7 @@ class ItemPolicy
      */
     public function delete(User $user, Item $item): bool
     {
-        return $user->id === $item->user_id;
+        return $user->id === $item->user_id || $user->is_admin;
     }
 
     /**
