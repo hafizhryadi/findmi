@@ -45,16 +45,12 @@ export default function Navbar({ auth }: { auth: AuthProps }) {
                         {/* Logo Polsri */}
                         <div className="flex items-center space-x-3">
                             <img src="/app-logo.png?height=70&width=70" alt="Polsri Logo" className="h-12 w-12 object-contain" />
-                            <div className="hidden sm:block">
-                                <h1 className="text-lg font-bold">Manajemen Informatika</h1>
-                                <p className="text-sm font-medium text-pink-600">Politeknik Negeri Sriwijaya</p>
-                            </div>
+                            <Link href="/" className="bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-2xl font-bold text-transparent">
+                                FindMi
+                            </Link>
                         </div>
                     </div>
                     <div className="flex items-center gap-6">
-                        <Link href="/" className="bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-2xl font-bold text-transparent">
-                            FindMi
-                        </Link>
                         {/* Dark mode toggle button */}
                         <button
                             onClick={toggleDarkMode}
@@ -102,7 +98,7 @@ export default function Navbar({ auth }: { auth: AuthProps }) {
                                         <line x1="6.07" y1="19.07" x2="7.82" y2="16.93" />
 
                                         <line x1="5" y1="12" x2="2" y2="12" />
-                                        
+
                                         <line x1="6.07" y1="4.93" x2="7.82" y2="7.07" />
                                     </g>
                                 </svg>
@@ -110,27 +106,22 @@ export default function Navbar({ auth }: { auth: AuthProps }) {
                         </button>
                         <nav className="flex items-center justify-end gap-4">
                             {auth?.user ? (
-                                <div className="relative group">
-                                    <button
-                                        className="inline-flex items-center rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] dark:border-[#3E3E3A] dark:text-[#EDEDEC] focus:outline-none"
-                                    >
+                                <div className="group relative">
+                                    <button className="inline-flex items-center rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] focus:outline-none dark:border-[#3E3E3A] dark:text-[#EDEDEC]">
                                         {auth.user.name}
                                         <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                                         </svg>
                                     </button>
-                                    <div className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-[#232321] dark:text-[#EDEDEC] opacity-0 group-focus-within:opacity-100 pointer-events-none group-focus-within:pointer-events-auto transition-opacity">
-                                        <Link
-                                            href="/settings/profile"
-                                            className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-[#2d2d2a]"
-                                        >
+                                    <div className="ring-opacity-5 pointer-events-none absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white py-2 opacity-0 shadow-lg ring-1 ring-black transition-opacity group-focus-within:pointer-events-auto group-focus-within:opacity-100 dark:bg-[#232321] dark:text-[#EDEDEC]">
+                                        <Link href="/settings/profile" className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-[#2d2d2a]">
                                             Profile
                                         </Link>
                                         <Link
                                             href="/logout"
                                             method="post"
                                             as="button"
-                                            className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-[#2d2d2a]"
+                                            className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-[#2d2d2a]"
                                         >
                                             Log out
                                         </Link>

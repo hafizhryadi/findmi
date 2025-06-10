@@ -18,7 +18,8 @@ type Item = {
     status: string;
     canUpdate?: boolean;
     canDelete?: boolean;
-    creator_name?: string; // Add creator_name
+    creator_name: string;
+    creator_phone: string;
 };
 
 type Props = {
@@ -27,6 +28,7 @@ type Props = {
         links: Array<{ url: string | null; label: string; active: boolean }>;
     };
 };
+
 
 const Index: React.FC<Props> = ({ items }) => {
     const { auth } = usePage().props as unknown as { auth: { user: { name: string } | null } };
@@ -41,6 +43,14 @@ const Index: React.FC<Props> = ({ items }) => {
                 return 'bg-gray-100 text-gray-800 border-gray-200';
         }
     };
+
+    function formatPhone(phone: string) {
+        const clean = phone.replace(/\D/g, '')
+        if (clean.startsWith('0')) {
+            return clean.substring(1);
+        }
+        return clean;
+    }
 
     // Fungsi handleCardClick yang akan digunakan pada setiap Card
     const handleCardClick = (itemId: number, e: React.MouseEvent) => {
@@ -68,12 +78,12 @@ const Index: React.FC<Props> = ({ items }) => {
                 <div className="absolute inset-0 bg-gradient-to-r from-pink-600 via-rose-500 to-pink-700"></div>
                 <div className="absolute inset-0 bg-black/10"></div>
                 <div className="relative mx-auto max-w-7xl px-4 py-16 text-center sm:px-6 lg:px-8">
-                    <h1 className="mb-6 text-4xl font-bold text-white drop-shadow-lg md:text-6xl">Welcome to FindMi</h1>
+                    <h1 className="mb-6 text-4xl font-bold text-white drop-shadow-lg md:text-6xl dark:text-pink-200">Welcome to FindMi</h1>
                     <p className="mx-auto mb-8 max-w-2xl text-xl text-pink-100">Temukan barang yang hilang dengan mudah dan cepat.</p>
                     <InertiaLink href="/items/create">
                         <Button
                             size="lg"
-                            className="cursor-pointer rounded-full border-2 border-white bg-white px-8 py-3 font-semibold text-pink-600 shadow-lg transition-all duration-200 hover:bg-pink-50 hover:shadow-xl"
+                            className="cursor-pointer rounded-full border-2 border-white bg-white px-8 py-3 font-semibold text-pink-600 shadow-lg transition-all duration-200 hover:bg-pink-50 hover:shadow-xl dark:border-black dark:bg-black dark:text-pink-300"
                         >
                             <Plus className="mr-2 h-5 w-5" />
                             Create an Item
@@ -86,9 +96,9 @@ const Index: React.FC<Props> = ({ items }) => {
             <div className="mx-auto max-w-6xl px-2 py-5 sm:px-3 lg:px-10">
                 {items.data.length === 0 ? (
                     <div className="py-16 text-center">
-                        <div className="mx-auto max-w-md rounded-xl border-2 border-pink-200 bg-pink-50 p-8 shadow-lg">
+                        <div className="mx-auto max-w-md rounded-xl border-2 border-pink-200 bg-pink-50 p-8 shadow-lg dark:border-pink-950 dark:bg-black">
                             <Search className="mx-auto mb-4 h-12 w-12 text-pink-400" />
-                            <h3 className="mb-2 text-lg font-medium text-pink-900">No items found</h3>
+                            <h3 className="mb-2 text-lg font-medium text-pink-900 dark:text-pink-500">No items found</h3>
                             <p className="text-pink-600">Start by creating your first item!</p>
                         </div>
                     </div>
@@ -122,6 +132,9 @@ const Index: React.FC<Props> = ({ items }) => {
 
                                 <CardContent className="pb-4">
                                     <p className="mb-3 text-sm leading-relaxed">{item.description}</p>
+                                    <button className="rounded-full border-2 border-pink-200 bg-white px-4 py-2 text-pink-600 transition-colors duration-200 hover:border-pink-300 dark:hover:bg-slate-950 dark:hover:border-pink-300 hover:bg-pink-50 dark:border-pink-900 dark:bg-black dark:text-pink-200">
+                                        <a href={`https://wa.me/+62${formatPhone(item.creator_phone)}`}>Contact Me!</a>
+                                    </button>
                                     {!item.image && (
                                         <div className="mb-3">
                                             <Badge className={`${getStatusColor(item.status)} font-medium`}>{item.status}</Badge>

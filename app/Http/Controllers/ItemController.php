@@ -19,14 +19,12 @@ class ItemController extends Controller
             $item->canUpdate = $user ? $user->can('update', $item) : false;
             $item->canDelete = $user ? $user->can('delete', $item) : false;
             $item->creator_name = $item->user ? $item->user->name : null;
+            $item->creator_phone = $item->user ? $item->user->phone : null;
             return $item;
         });
         return Inertia::render('items/Index', [
             'items' => $items
         ]);
-        // return view('items.index', [
-        //     'items' => $items
-        // ]);
     }
 
     /**
@@ -73,6 +71,11 @@ class ItemController extends Controller
     public function show(string $id)
     {
         $item = Item::findOrFail($id);
+        $user = auth()->user();
+        $item->canUpdate = $user ? $user->can('update', $item) : false;
+        $item->canDelete = $user ? $user->can('delete', $item) : false;
+        $item->creator_name = $item->user ? $item->user->name : null;
+        $item->creator_phone = $item->user ? $item->user->phone : null;
         return Inertia::render('items/ShowItem', [
             'item' => $item
         ]);
