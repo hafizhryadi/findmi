@@ -12,7 +12,7 @@ Route::get('/', ItemController::class . '@index')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
+        return Indertia::render('dashboard');
     })->name('dashboard');
     Route::resource('items', ItemController::class)->names([
         'index' => 'items.index',
