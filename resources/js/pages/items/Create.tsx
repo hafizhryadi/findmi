@@ -193,15 +193,6 @@ const Create: React.FC = () => {
                         </p>
                         <p className="text-xs ">SVG, PNG, JPG or GIF (max. 2MB)</p>
                       </div>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className="border-pink-200 hover:border-pink-400 text-pink-600"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <ImageIcon className="h-4 w-4 mr-2" />
-                        Select Image
-                      </Button>
                     </div>
                   )}
                 </div>
