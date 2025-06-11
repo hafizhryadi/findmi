@@ -25,7 +25,7 @@ FindMI is a Lost and Found system developed for Informatics Management, Sriwijay
     php artisan storage:link
     ```
 
-5. **Link storage**
+5. **Generate Projecct Key**
     ```bash
     php artisan key:generate
     ```
