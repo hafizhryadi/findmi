@@ -82,13 +82,13 @@ const ShowItem: React.FC<Props> = ({ item }) => {
               <Card className="overflow-hidden border-2 border-pink-200 shadow-xl">
                   {/* Image Section */}
                   {item.image && (
-                      <div className="relative h-96 overflow-hidden">
+                      <div className="relative h-200 overflow-auto">
                           <img
                               src={item.image.startsWith('http') ? item.image : `/storage/${item.image}`}
                               alt={item.name}
-                              className="h-full w-full object-cover"
+                              className="h-auto w-auto object-center mx-auto my-auto"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                          {/* <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div> */}
                       </div>
                   )}
 
