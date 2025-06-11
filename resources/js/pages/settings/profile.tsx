@@ -22,6 +22,7 @@ import Navbar from '@/components/navbar';
 type ProfileForm = {
     name: string;
     email: string;
+    phone: string;
 };
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
@@ -30,6 +31,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
         name: auth.user.name,
         email: auth.user.email,
+        phone: String(auth.user.phone ?? '')
     });
 
     const submit: FormEventHandler = (e) => {
@@ -82,6 +84,25 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                     />
 
                                     <InputError className="mt-2" message={errors.email} />
+                                </div>
+
+                                <div className="grid gap-2">
+                                    <Label htmlFor="phone">Phone number</Label>
+
+                                    <Input
+                                        id="phone"
+                                        type="tel"
+                                        className="mt-1 block w-full"
+                                        value={data.phone}
+                                        onChange={(e) => setData('phone', e.target.value)}
+                                        required
+                                        autoComplete="tel"
+                                        placeholder="081234567890"
+                                        maxLength={15}
+                                        pattern="^\d{9,15}$"
+                                    />
+
+                                    <InputError className="mt-2" message={errors.phone} />
                                 </div>
 
                                 {mustVerifyEmail && auth.user.email_verified_at === null && (

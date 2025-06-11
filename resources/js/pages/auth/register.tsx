@@ -85,6 +85,7 @@ export default function Register() {
                             disabled={processing}
                             placeholder="081234567890"
                             max={15}
+                            pattern="^\d{9,15}$"
                         />
                         <InputError message={errors.phone} />
                     </div>
