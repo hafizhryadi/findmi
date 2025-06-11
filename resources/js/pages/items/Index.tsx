@@ -2,6 +2,7 @@ import { InertiaLink } from '@inertiajs/inertia-react';
 import { router, usePage } from '@inertiajs/react'; // Pastikan router diimpor
 import { Edit, Plus, Search, Trash2 } from 'lucide-react';
 import type React from 'react';
+import { useState } from 'react';
 
 import Footer from '@/components/footer';
 import Menu from '@/components/menu';
@@ -29,9 +30,21 @@ type Props = {
     };
 };
 
-
 const Index: React.FC<Props> = ({ items }) => {
-    const { auth } = usePage().props as unknown as { auth: { user: { name: string } | null } };
+    const { auth, filters } = usePage().props as unknown as {
+        auth: { user: { name: string } | null };
+        filters?: { search?: string; status?: string };
+    };
+
+    // State for search and status filter
+    const [search, setSearch] = useState(filters?.search || '');
+    const [status, setStatus] = useState(filters?.status || '');
+
+    // Handle filter submit
+    const handleFilter = (e: React.FormEvent) => {
+        e.preventDefault();
+        router.get('/items', { search, status }, { preserveState: true });
+    };
 
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
@@ -45,7 +58,7 @@ const Index: React.FC<Props> = ({ items }) => {
     };
 
     function formatPhone(phone: string) {
-        const clean = phone.replace(/\D/g, '')
+        const clean = phone.replace(/\D/g, '');
         if (clean.startsWith('0')) {
             return clean.substring(1);
         }
@@ -92,6 +105,40 @@ const Index: React.FC<Props> = ({ items }) => {
                 </div>
             </div>
 
+            {/* Search & Filter */}
+            <div className="mx-auto max-w-6xl px-2 pt-8 pb-2 sm:px-3 lg:px-10">
+                <form onSubmit={handleFilter} className="mb-6 flex flex-col gap-3 md:flex-row md:items-center">
+                    <input
+                        type="text"
+                        placeholder="Search items..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="w-full rounded-lg border-2 border-pink-200 px-4 py-2 focus:border-pink-400 focus:outline-none"
+                    />
+                    <select
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value)}
+                        className="rounded-lg border-2 border-pink-200 px-4 py-2 focus:border-pink-400 focus:outline-none"
+                    >
+                        <option className="dark:bg-black" value="">
+                            All Status
+                        </option>
+                        <option className="dark:bg-black" value="lost">
+                            Lost
+                        </option>
+                        <option className="dark:bg-black" value="found">
+                            Found
+                        </option>
+                        <option className="dark:bg-black" value="claimed">
+                            Claimed
+                        </option>
+                    </select>
+                    <Button type="submit" className="rounded-lg bg-pink-500 px-6 py-2 text-white hover:bg-pink-600">
+                        Search
+                    </Button>
+                </form>
+            </div>
+
             {/* Items Grid */}
             <div className="mx-auto max-w-6xl px-2 py-5 sm:px-3 lg:px-10">
                 {items.data.length === 0 ? (
@@ -99,7 +146,7 @@ const Index: React.FC<Props> = ({ items }) => {
                         <div className="mx-auto max-w-md rounded-xl border-2 border-pink-200 bg-pink-50 p-8 shadow-lg dark:border-pink-950 dark:bg-black">
                             <Search className="mx-auto mb-4 h-12 w-12 text-pink-400" />
                             <h3 className="mb-2 text-lg font-medium text-pink-900 dark:text-pink-500">No items found</h3>
-                            <p className="text-pink-600">Start by creating your first item!</p>
+                            <p className="text-pink-600 dark:text-pink-100">Start by creating your first item!</p>
                         </div>
                     </div>
                 ) : (
@@ -132,7 +179,7 @@ const Index: React.FC<Props> = ({ items }) => {
 
                                 <CardContent className="pb-4">
                                     <p className="mb-3 text-sm leading-relaxed">{item.description}</p>
-                                    <button className="rounded-full border-2 border-pink-200 bg-white px-4 py-2 text-pink-600 transition-colors duration-200 hover:border-pink-300 dark:hover:bg-slate-950 dark:hover:border-pink-300 hover:bg-pink-50 dark:border-pink-900 dark:bg-black dark:text-pink-200">
+                                    <button className="rounded-full border-2 border-pink-200 bg-white px-4 py-2 text-pink-600 transition-colors duration-200 hover:border-pink-300 hover:bg-pink-50 dark:border-pink-900 dark:bg-black dark:text-pink-200 dark:hover:border-pink-300 dark:hover:bg-slate-950">
                                         <a href={`https://wa.me/+62${formatPhone(item.creator_phone)}`}>Contact Me!</a>
                                     </button>
                                     {!item.image && (

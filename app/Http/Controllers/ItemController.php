@@ -11,9 +11,26 @@ class ItemController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $items = Item::latest()->paginate(10);
+        $query = Item::query();
+
+        // Search by name or description
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                  ->orWhere('description', 'like', "%$search%")
+                ;
+            });
+        }
+
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
+        }
+
+        $items = $query->latest()->paginate(10)->withQueryString();
         $items->getCollection()->transform(function ($item) {
             $user = auth()->user();
             $item->canUpdate = $user ? $user->can('update', $item) : false;
@@ -23,7 +40,11 @@ class ItemController extends Controller
             return $item;
         });
         return Inertia::render('items/Index', [
-            'items' => $items
+            'items' => $items,
+            'filters' => [
+                'search' => $request->input('search', ''),
+                'status' => $request->input('status', ''),
+            ],
         ]);
     }
 
@@ -120,7 +141,6 @@ class ItemController extends Controller
 
         $item->update($validatedData);
         return Inertia::render('items/Index');
-        //return redirect()->route('items.index')->with('success', 'Item updated successfully.');
     }
 
     /**
@@ -134,8 +154,6 @@ class ItemController extends Controller
         }
 
         $item->delete();
-        return redirect()->route('/');
-        //return Inertia::render('items/Index');
-        //return redirect()->route('items.index')->with('success', 'Item deleted successfully.');
+        return Inertia::render('items/Index');
     }
 }
