@@ -154,6 +154,6 @@ class ItemController extends Controller
         }
 
         $item->delete();
-        return Inertia::render('items/Index');
+        return redirect()->route('items.index');
     }
 }

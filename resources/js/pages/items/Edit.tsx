@@ -177,18 +177,6 @@ const Edit: React.FC = () => {
                                                 <Check className="mr-2 h-5 w-5" />
                                                 <span>Image uploaded successfully</span>
                                             </div>
-                                            <Button
-                                                type="button"
-                                                variant="outline"
-                                                className="border-pink-200 text-pink-600 hover:border-pink-400"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    setPreviewUrl(null);
-                                                    setImage(undefined);
-                                                }}
-                                            >
-                                                Change Image
-                                            </Button>
                                         </div>
                                     ) : (
                                         <div className="space-y-3">

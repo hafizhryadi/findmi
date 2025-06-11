@@ -1,7 +1,7 @@
 import type React from "react"
 import { useState } from "react"
 import { Link, useForm, usePage } from "@inertiajs/react"
-import { ArrowLeft, Upload, ImageIcon, AlertCircle, Check, Loader2 } from "lucide-react"
+import { ArrowLeft, Upload, AlertCircle, Check, Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -169,18 +169,7 @@ const Create: React.FC = () => {
                         <Check className="h-5 w-5 mr-2" />
                         <span>Image uploaded successfully</span>
                       </div>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className="border-pink-200 hover:border-pink-400 text-pink-600"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          setPreviewUrl(null)
-                          setData("image", undefined)
-                        }}
-                      >
-                        Change Image
-                      </Button>
+                      
                     </div>
                   ) : (
                     <div className="space-y-3">

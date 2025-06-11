@@ -1,5 +1,5 @@
 import { InertiaLink } from '@inertiajs/inertia-react';
-import { router, usePage } from '@inertiajs/react'; // Pastikan router diimpor
+import { router, useForm, usePage } from '@inertiajs/react'; // Pastikan router diimpor
 import { Edit, Plus, Search, Trash2 } from 'lucide-react';
 import type React from 'react';
 import { useState } from 'react';
@@ -49,7 +49,7 @@ const Index: React.FC<Props> = ({ items }) => {
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
             case 'found':
-                return 'bg-green-100 text-green-800 border-green-200';
+                return 'bg-blue-100 text-green-800 border-green-200';
             case 'lost':
                 return 'bg-red-100 text-red-800 border-red-200';
             default:
@@ -76,6 +76,18 @@ const Index: React.FC<Props> = ({ items }) => {
         }
         // Jika bukan tombol atau tautan, navigasi ke halaman detail
         router.visit(`/items/${itemId}`);
+    };
+
+    const { delete: destroy, reset } = useForm();
+
+    const destroyItem = (e: React.FormEvent, item: Item) => {
+        e.preventDefault();
+        if (!window.confirm('Are you sure you want to delete this post?')) {
+            return;
+        }
+        destroy(route('items.destroy', item), {
+            onFinish: () => reset(),
+        });
     };
 
     return (
@@ -201,21 +213,17 @@ const Index: React.FC<Props> = ({ items }) => {
                                     )}
 
                                     {item.canDelete && (
-                                        <Button
-                                            type="button"
-                                            variant="outline"
-                                            size="sm"
-                                            className="border-red-200 hover:border-red-300 hover:text-red-600"
-                                            onClick={(e) => {
-                                                e.stopPropagation(); // Penting: Mencegah klik kartu saat menghapus
-                                                if (window.confirm('Are you sure?')) {
-                                                    router.delete(`/items/${item.id}`);
-                                                }
-                                            }}
-                                        >
-                                            <Trash2 className="mr-1 h-4 w-4" />
-                                            Delete
-                                        </Button>
+                                        <form onClick={(e) => e.stopPropagation()} onSubmit={(e) => destroyItem(e, item)}>
+                                            <Button
+                                                type="submit"
+                                                variant="destructive"
+                                                size="sm"
+                                                className="flex items-center gap-1 border-rose-200 hover:border-rose-300 hover:text-red-500"
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                                Delete
+                                            </Button>
+                                        </form>
                                     )}
                                 </CardFooter>
                             </Card>
@@ -259,3 +267,5 @@ const Index: React.FC<Props> = ({ items }) => {
 };
 
 export default Index;
+
+

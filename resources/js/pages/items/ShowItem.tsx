@@ -29,9 +29,11 @@ const ShowItem: React.FC<Props> = ({ item }) => {
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case "found":
-        return "bg-green-100 text-green-800 border-green-200"
+        return "bg-blue-100 text-blue-800 border-green-200"
       case "lost":
-      return "bg-red-100 text-red-800 border-red-200"
+        return "bg-red-100 text-red-800 border-red-200"
+      case "claimed":
+        return "bg-green-100 text-green-800 border-red-200"
       default:
         return "bg-gray-100 text-gray-800 border-gray-200"
     }
@@ -82,7 +84,7 @@ const ShowItem: React.FC<Props> = ({ item }) => {
               <Card className="overflow-hidden border-2 border-pink-200 shadow-xl">
                   {/* Image Section */}
                   {item.image && (
-                      <div className="relative h-200 overflow-auto">
+                      <div className="relative overflow-auto">
                           <img
                               src={item.image.startsWith('http') ? item.image : `/storage/${item.image}`}
                               alt={item.name}
