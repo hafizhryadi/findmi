@@ -6,7 +6,7 @@ FindMI is a Lost and Found system developed for Informatics Management, Sriwijay
 
 1. **Clone the repository**
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/hafizhryadi/findmi.git
     cd findmi_react
     ```
 
@@ -30,3 +30,9 @@ FindMI is a Lost and Found system developed for Informatics Management, Sriwijay
     php artisan key:generate
     ```
 Follow these steps to set up the project locally.
+
+## Tech Stack
+
+- **Laravel** – Backend framework for building robust APIs and server-side logic.
+- **Inertia.js** – Bridges backend and frontend, enabling single-page app experience.
+- **React.js** – Frontend library for building interactive user interfaces.
